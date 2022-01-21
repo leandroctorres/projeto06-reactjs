@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Formik, Form, Field } from 'formik';
+import './styles.css';
+import * as Yup from 'yup';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const schema = Yup.object().shape({
+	firstName: Yup.string().required(),
+	age: Yup.number().min(10).required(),
+});
+
+export default function App() {
+	return (
+		<div className="App">
+			<h1>Formik</h1>
+			<h2>Validação de formulários</h2>
+			<Formik
+			validationSchema={schema}
+				initialValues={{
+					firstName: '',
+					age: ''
+				}}
+			>
+				{( {errors }) => (
+					<Form>
+						<div className="form-control">
+							<label htmlFor="firstName">Primeiro Nome</label>
+							<Field id="firstName" name="firstName" type="text" />
+							{errors.firstName && (
+								<div>{errors.firstName}</div>
+							)}
+						</div>
+						<div className="form-control">
+							<label htmlFor="age">Idade</label>
+							<Field id="age" name="age" type="number" />
+							{errors.age && (
+								<div>{errors.age}</div>
+							)}
+						</div>
+
+					</Form>
+				)}
+			</Formik>
+		</div>
+	);
 }
 
-export default App;
